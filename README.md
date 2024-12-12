@@ -1,0 +1,1 @@
+# license-script-generator
